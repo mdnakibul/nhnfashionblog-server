@@ -43,8 +43,8 @@ client.connect(err => {
   // Load single post 
 
 
-  app.get('/post/:id', (req, res) => {
-    serviceCollection.find({ _id: ObjectId(req.params.id) })
+  app.get('/post/:postId', (req, res) => {
+    postCollection.find({ _id: ObjectId(req.params.postId) })
       .toArray((err, documents) => {
         res.send(documents[0])
       })
