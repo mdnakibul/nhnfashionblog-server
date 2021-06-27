@@ -40,26 +40,36 @@ client.connect(err => {
       })
   });
 
+  // Load single post 
+
+
+  app.get('/post/:id', (req, res) => {
+    serviceCollection.find({ _id: ObjectId(req.params.id) })
+      .toArray((err, documents) => {
+        res.send(documents[0])
+      })
+  })
+
   // Delete Data 
 
-  app.delete('/deletePost',(req,res)=>{
+  app.delete('/deletePost', (req, res) => {
     postCollection.deleteOne(
-      { "email":"My title2" } // specifies the document to delete
-  ).then(
-    result =>{
-      console.log(result.deleteCount);
-      res.send(result.deletedCount > 0);
-    }
-  ).catch(error => {
-    console.log(error);
-  })
+      { "email": "My title2" } // specifies the document to delete
+    ).then(
+      result => {
+        console.log(result.deleteCount);
+        res.send(result.deletedCount > 0);
+      }
+    ).catch(error => {
+      console.log(error);
+    })
   })
 
   // Add Admin 
 
   app.post('/addAdmin', (req, res) => {
     const email = req.body.email;
-    adminCollection.insertOne({email })
+    adminCollection.insertOne({ email })
       .then(result => {
         res.send(result.insertedCount > 0);
       })
@@ -70,18 +80,18 @@ client.connect(err => {
   app.post('/isAdmin', (req, res) => {
     const email = req.body.email;
     adminCollection.find({ email: email })
-        .toArray((err, doctors) => {
-            res.send(doctors.length > 0);
-        })
-})
+      .toArray((err, doctors) => {
+        res.send(doctors.length > 0);
+      })
+  })
 
 
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+  res.send('Hello World!')
 })
 
 app.listen(process.env.PORT || port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://localhost:${port}`)
 })
